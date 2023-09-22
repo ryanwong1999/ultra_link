@@ -33,7 +33,14 @@ void Start_Task(void *pvParameters)
 							(void*          )NULL,                			//传递给任务函数的参数
 							(UBaseType_t    )LED_TASK_PRIO,       			//任务优先级
 							(TaskHandle_t*  )&Led_Task_Handler);				//任务句柄
-							
+			
+	xTaskCreate((TaskFunction_t )Display_Task,            	//任务函数
+							(const char*    )"Display_Task",          	//任务名称
+							(uint16_t       )DISPLAY_STK_SIZE,        	//任务堆栈大小
+							(void*          )NULL,                  		//传递给任务函数的参数
+							(UBaseType_t    )DISPLAY_TASK_PRIO,       	//任务优先级
+							(TaskHandle_t*  )&Display_Task_Handler);   	//任务句柄									
+	
 	vTaskDelete(Start_Task_Handler);	//删除开始任务
 	taskEXIT_CRITICAL();            	//退出临界区
 }
@@ -92,6 +99,21 @@ void Cammand_Task(void *p_arg)
 			delay_ms(10);   
 		}
 		vTaskDelay(10);
+	}
+}
+
+/************************************************/
+//函数功能：显示任务
+//输入参数：
+//返回值：
+//备注：
+/************************************************/
+void Display_Task(void *p_arg)
+{
+	while(1)
+	{		
+	
+		vTaskDelay(500);
 	}
 }
 
