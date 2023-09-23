@@ -112,7 +112,13 @@ void Display_Task(void *p_arg)
 {
 	while(1)
 	{		
-	
+		Draw_Circle(160,172,43,GREEN);
+		Draw_Circle(160,172,86,GREEN);
+		Draw_Circle(160,172,129,GREEN);
+		Draw_Circle(160,172,172,GREEN);
+		//画矩形:目的是覆盖掉圆的下半部分
+		LCD_DrawRectangle(0,172,320,182,BLACK); //(起点坐标,终点坐标,颜色)
+		LCD_DrawLine(0,171,320,171,GREEN); //画横坐标轴
 		vTaskDelay(500);
 	}
 }

@@ -14,7 +14,12 @@
 #define LED_OFF								GPIO_SetBits(LED_PORT, LED_PIN)
 #define LED_ON								GPIO_ResetBits(LED_PORT, LED_PIN)
 
+#define I2CPORT								GPIOB					//定义IO接口
+#define I2C_SCL								GPIO_Pin_6		//定义IO接口
+#define I2C_SDA								GPIO_Pin_7		//定义IO接口
 
-void LED_Init(void);//初始化		
+
+void LED_Init(void);				//初始化		
+void I2C_GPIO_Init(void);
 
 #endif

@@ -50,6 +50,9 @@
 #include "bsp_rs485.h"
 #include "bsp_tim.h"
 #include "bsp_usart.h"
+#include "bsp_oled.h"
+#include "bsp_lcd.h"
+#include "bsp_lcd_init.h"
 
 
 /*
