@@ -7,14 +7,14 @@ void RCC_Configuration(void);
  */
 static void Initializer(void)
 {
-	SystemInit();	//System init.
-	RCC_Configuration(); //时钟设置
-	delay_init();	 //Delay init.
-//	Timer_Init();	//初始化定时器
+	SystemInit();								//System init.
+	RCC_Configuration(); 				//时钟设置
+	delay_init();	 							//Delay init.
+//	Timer_Init();								//初始化定时器
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);// 设置中断优先级分组2
-	uart_init(9600);	 //串口初始化为9600
+	uart_init(9600);	 					//串口初始化为9600
 	LED_Init();
-	LCD_Init();  //LCD屏初始化
+	LCD_Init();  								//LCD屏初始化
 //	TIM4_CH1_PWM_Init(2000,720);//PWM频率=72000000/2000/720=50hz=20ms
 	LCD_Fill(0,0,LCD_W,LCD_H,BLACK);
 }
