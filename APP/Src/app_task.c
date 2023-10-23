@@ -26,7 +26,6 @@ void Start_Task(void *pvParameters)
 							(UBaseType_t    )TEST_TASK_PRIO,       			//任务优先级
 							(TaskHandle_t*  )&Test_Task_Handler);				//任务句柄  
 
-							
 	xTaskCreate((TaskFunction_t )LED_Task,            			//任务函数
 							(const char*    )"LED_Task",          			//任务名称
 							(uint16_t       )LED_STK_SIZE,        			//任务堆栈大小
@@ -41,6 +40,13 @@ void Start_Task(void *pvParameters)
 							(UBaseType_t    )DISPLAY_TASK_PRIO,       	//任务优先级
 							(TaskHandle_t*  )&Display_Task_Handler);   	//任务句柄									
 	
+	xTaskCreate((TaskFunction_t )Key_Task,            			//任务函数
+							(const char*    )"Key_Task",          			//任务名称
+							(uint16_t       )KEY_STK_SIZE,        			//任务堆栈大小
+							(void*          )NULL,                  		//传递给任务函数的参数
+							(UBaseType_t    )KEY_TASK_PRIO,       			//任务优先级
+							(TaskHandle_t*  )&Key_Task_Handler);   			//任务句柄
+							
 	vTaskDelete(Start_Task_Handler);	//删除开始任务
 	taskEXIT_CRITICAL();            	//退出临界区
 }
@@ -67,35 +73,35 @@ void Err_Handle_Task(void *p_arg)
 //返回值：
 //备注：
 /************************************************/
-			
 u8 t;
 u8 len;	
-u16 times=0; 
+u16 times = 0; 
 void Cammand_Task(void *p_arg)
 {
 	while(1)
 	{		
-		if(USART_RX_STA&0x8000)
+		if(USART_RX_STA & 0x8000)
 		{					   
-			len=USART_RX_STA&0x3fff;//得到此次接收到的数据长度
+			len = USART_RX_STA & 0x3fff;				//得到此次接收到的数据长度
 			printf("\r\n您发送的消息为:\r\n");
-			for(t=0;t<len;t++)
+			for(t=0; t<len; t++)
 			{
-				USART1->DR=USART_RX_BUF[t];
-				while((USART1->SR&0X40)==0);//等待发送结束
+				USART1->DR = USART_RX_BUF[t];
+				while((USART1->SR & 0X40) == 0);	//等待发送结束
 			}
-			printf("\r\n\r\n");//插入换行
-			USART_RX_STA=0;
+			printf("\r\n\r\n");									//插入换行
+			USART_RX_STA = 0;
 		}
 		else
 		{
 			times++;
-			if(times%5000==0)
+			if(times % 5000 == 0)
 			{
 				printf("\r\nALIENTEK MiniSTM32开发板 串口实验\r\n");
 				printf("正点原子@ALIENTEK\r\n\r\n\r\n");
 			}
-			if(times%200==0)printf("请输入数据,以回车键结束\r\n");  
+			if(times % 200 == 0)
+				printf("请输入数据,以回车键结束\r\n");  
 			delay_ms(10);   
 		}
 		vTaskDelay(10);
@@ -111,18 +117,45 @@ void Cammand_Task(void *p_arg)
 void Display_Task(void *p_arg)
 {
 	while(1)
-	{		
-		Draw_Circle(160,172,43,GREEN);
-		Draw_Circle(160,172,86,GREEN);
-		Draw_Circle(160,172,129,GREEN);
-		Draw_Circle(160,172,172,GREEN);
-		//画矩形:目的是覆盖掉圆的下半部分
-		LCD_DrawRectangle(0,172,320,182,BLACK); //(起点坐标,终点坐标,颜色)
-		LCD_DrawLine(0,171,320,171,GREEN); //画横坐标轴
+	{
+//		LCD_ShowChinese(0, 0, "中中中", WHITE, BLACK, 32, 0);
+		
 		vTaskDelay(500);
 	}
 }
 
+/************************************************/
+//函数功能：按键任务处理任务
+//输入参数：
+//返回值：
+//备注：
+/************************************************/
+void Key_Task(void *p_arg)
+{
+	int t = 0;
+	while(1)
+	{
+		t = KEY_Scan(0);		//得到键值
+		switch(t)
+		{				 
+			case KEY_UP_PRES:
+				LCD_ShowChinese(0, 0, "中中中", WHITE, BLACK, 32, 0);
+				break;
+			case KEY_DOWN_PRES:
+				LCD_ShowChinese(0, 0, "景景景", WHITE, BLACK, 32, 0);
+				break;
+			case KEY_BACK_PRES:
+				LCD_ShowChinese(0, 0, "园园园", WHITE, BLACK, 32, 0);
+				break;
+			case KEY_ENTER_PRES:
+				LCD_ShowChinese(0, 0, "电电电", WHITE, BLACK, 32, 0);
+				break;
+			default:
+				delay_ms(10);	
+		}
+		vTaskDelay(10);
+	}
+}
 
 /************************************************/
 //函数功能：测试任务

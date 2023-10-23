@@ -67,6 +67,8 @@
 #include "app_exit.h" 
 #include "app_system.h" 
 #include "app_tim.h" 
+#include "app_key.h" 
+#include "app_menu.h" 
 
 
 #endif
