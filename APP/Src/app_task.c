@@ -139,7 +139,7 @@ void Key_Task(void *p_arg)
 		switch(t)
 		{				 
 			case KEY_UP_PRES:
-				LCD_ShowChinese(0, 0, "ÖÐÖÐÖÐ", WHITE, BLACK, 32, 0);
+				LCD_ShowChar(0, 0, '-', WHITE, BLACK, 32, 0);
 				break;
 			case KEY_DOWN_PRES:
 				LCD_ShowChinese(0, 0, "¾°¾°¾°", WHITE, BLACK, 32, 0);

@@ -69,6 +69,8 @@
 #include "app_tim.h" 
 #include "app_key.h" 
 #include "app_menu.h" 
+#include "app_mytime.h" 
+
 
 
 #endif
