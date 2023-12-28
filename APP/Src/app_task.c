@@ -1,6 +1,11 @@
 #define APP_TASK_GLOBALS	 //定义全局变量私有宏，即其他.c文件没有定义该宏
 #include "includes.h" 
 
+u8 isKeyUp = 0;
+u8 isKeyDown = 0;
+u8 isKeyBack = 0;
+u8 isKeyEnter = 0;
+
 void Start_Task(void *pvParameters)
 {
 	taskENTER_CRITICAL();           //进入临界区
@@ -118,12 +123,12 @@ void Display_Task(void *p_arg)
 {
 	while(1)
 	{
-//		count1++;
-//		count2++;
-//		count3++;
-//		count4++;
-//		GuiControl();
-//		GuiDataDisplayRefresh();
+		count1++;
+		count2++;
+		count3++;
+		count4++;
+		GuiControl();
+		GuiDataDisplayRefresh();
 		vTaskDelay(10);
 	}
 }
@@ -139,24 +144,24 @@ void Key_Task(void *p_arg)
 	int t = 0;
 	while(1)
 	{
-//		t = KEY_Scan(0);		//得到键值
-//		switch(t)
-//		{				 
-//			case KEY_UP_PRES:
-//				LCD_ShowChinese(0, 0, "中中中", WHITE, BLACK, 32, 0);
-//				break;
-//			case KEY_DOWN_PRES:
-//				LCD_ShowChinese(0, 0, "景景景", WHITE, BLACK, 32, 0);
-//				break;
-//			case KEY_BACK_PRES:
-//				LCD_ShowChinese(0, 0, "园园园", WHITE, BLACK, 32, 0);
-//				break;
-//			case KEY_ENTER_PRES:
-//				LCD_ShowChinese(0, 0, "电电电", WHITE, BLACK, 32, 0);
-//				break;
-//			default:
-//				delay_ms(10);	
-//		}
+		t = KEY_Scan(0);		//得到键值
+		switch(t)
+		{				 
+			case KEY_UP_PRES:
+				isKeyUp = 1;
+				break;
+			case KEY_DOWN_PRES:
+				isKeyDown = 1;
+				break;
+			case KEY_BACK_PRES:
+				isKeyBack = 1;
+				break;
+			case KEY_ENTER_PRES:
+			  isKeyEnter = 1;
+				break;
+			default:
+				delay_ms(10);	
+		}
 		vTaskDelay(10);
 	}
 }

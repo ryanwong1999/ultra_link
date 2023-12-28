@@ -1,7 +1,6 @@
 #ifndef __APP_KEY_H
 #define __APP_KEY_H
 
-/**
 #define KEY_UPUP  	GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_8)		//读取按键
 #define KEY_DOWN		GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_4)		//读取按键
 #define KEY_BACK		GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_5)		//读取按键
@@ -13,13 +12,8 @@
 #define KEY_ENTER_PRES	4
 
 u8 KEY_Scan(u8 mode);  	//按键扫描函数		
-**/
+
 
 void KeyScan(void);
-
-extern u8 isKeyUp;
-extern u8 isKeyDown;
-extern u8 isKeyBack;
-extern u8 isKeyEnter;
 
 #endif

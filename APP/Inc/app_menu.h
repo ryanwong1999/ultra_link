@@ -17,7 +17,7 @@ struct Menu_t{
 	struct Menu_t *childrenMenu;	//当前菜单的子级菜单	
 };
 
-extern uint16_t count1,count2,count3,count4,count5;
+extern uint16_t count1, count2,count3, count4, count5;
 
 void GuiInit(void);
 void GuiControl(void);

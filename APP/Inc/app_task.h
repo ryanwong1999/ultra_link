@@ -9,6 +9,10 @@
 #define  APP_TASK_EXT  extern
 #endif
 
+extern u8 isKeyUp;
+extern u8 isKeyDown;
+extern u8 isKeyBack;
+extern u8 isKeyEnter;
 
 /**************************************ÈÎÎñ¾ä±ú*************************************/
 APP_TASK_EXT TaskHandle_t Start_Task_Handler;
