@@ -19,8 +19,8 @@ struct Menu_t{
 
 extern uint16_t count1, count2,count3, count4, count5;
 
-void GuiInit(void);
-void GuiControl(void);
+void MenuInit(void);
+void MenuControl(void);
 void DisplayRefreash(struct Menu_t *nowMenu, u8 selectItem, u8 scrollBar);
 void DisplayRefreashData(struct Menu_t *nowMenu, u8 selectItem, u8 scrollBar);
 void GuiDataDisplayRefresh(void);

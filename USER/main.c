@@ -19,7 +19,7 @@ static void Initializer(void)
 //	TIM4_CH1_PWM_Init(2000,720);//PWMÆµÂÊ=72000000/2000/720=50hz=20ms
 	LCD_Fill(0, 0, LCD_W, LCD_H, BLACK);
 	
-	GuiInit();
+	MenuInit();
 }
 
 int main(void)

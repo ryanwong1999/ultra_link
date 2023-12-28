@@ -2,13 +2,13 @@
 
 void LCD_GPIO_Init(void)
 {
-	GPIO_InitTypeDef  GPIO_InitStructure;
+	GPIO_InitTypeDef GPIO_InitStructure;
  	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);	 	//使能A端口时钟
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5;	 
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 		//推挽输出
+	GPIO_InitStructure.GPIO_Pin 	= GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;	 
+ 	GPIO_InitStructure.GPIO_Mode 	= GPIO_Mode_Out_PP; 		 	//推挽输出
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;				//速度50MHz
  	GPIO_Init(GPIOA, &GPIO_InitStructure);	  							//初始化GPIOA
- 	GPIO_SetBits(GPIOA,GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5);
+ 	GPIO_SetBits(GPIOA, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5);
 }
 
 
@@ -21,7 +21,7 @@ void LCD_Writ_Bus(u8 dat)
 {	
 	u8 i;
 	LCD_CS_Clr();
-	for(i=0;i<8;i++)
+	for(i=0; i<8; i++)
 	{			  
 		LCD_SCLK_Clr();
 		if(dat&0x80)
@@ -81,9 +81,9 @@ void LCD_WR_REG(u8 dat)
                 y1,y2 设置行的起始和结束地址
       返回值：  无
 ******************************************************************************/
-void LCD_Address_Set(u16 x1,u16 y1,u16 x2,u16 y2)
+void LCD_Address_Set(u16 x1, u16 y1, u16 x2, u16 y2)
 {
-	if(USE_HORIZONTAL==0)
+	if(USE_HORIZONTAL == 0)
 	{
 		LCD_WR_REG(0x2a);//列地址设置
 		LCD_WR_DATA(x1+34);
@@ -93,7 +93,7 @@ void LCD_Address_Set(u16 x1,u16 y1,u16 x2,u16 y2)
 		LCD_WR_DATA(y2);
 		LCD_WR_REG(0x2c);//储存器写
 	}
-	else if(USE_HORIZONTAL==1)
+	else if(USE_HORIZONTAL == 1)
 	{
 		LCD_WR_REG(0x2a);//列地址设置
 		LCD_WR_DATA(x1+34);
@@ -103,7 +103,7 @@ void LCD_Address_Set(u16 x1,u16 y1,u16 x2,u16 y2)
 		LCD_WR_DATA(y2);
 		LCD_WR_REG(0x2c);//储存器写
 	}
-	else if(USE_HORIZONTAL==2)
+	else if(USE_HORIZONTAL == 2)
 	{
 		LCD_WR_REG(0x2a);//列地址设置
 		LCD_WR_DATA(x1);
@@ -139,9 +139,9 @@ void LCD_Init(void)
 	LCD_WR_REG(0x11); 
 //	delay_ms(120); 
 	LCD_WR_REG(0x36); 
-	if(USE_HORIZONTAL==0)LCD_WR_DATA8(0x00);
-	else if(USE_HORIZONTAL==1)LCD_WR_DATA8(0xC0);
-	else if(USE_HORIZONTAL==2)LCD_WR_DATA8(0x70);
+	if(USE_HORIZONTAL == 0)LCD_WR_DATA8(0x00);
+	else if(USE_HORIZONTAL == 1)LCD_WR_DATA8(0xC0);
+	else if(USE_HORIZONTAL == 2)LCD_WR_DATA8(0x70);
 	else LCD_WR_DATA8(0xA0);
 
 	LCD_WR_REG(0x3A);

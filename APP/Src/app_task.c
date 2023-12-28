@@ -127,7 +127,7 @@ void Display_Task(void *p_arg)
 		count2++;
 		count3++;
 		count4++;
-		GuiControl();
+		MenuControl();
 		GuiDataDisplayRefresh();
 		vTaskDelay(10);
 	}

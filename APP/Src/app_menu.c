@@ -3,6 +3,8 @@
 int8_t selectItem = 0;		//当前菜单在当前菜单页的索引，最大为3，一页最多显示四个菜单
 int8_t scrollBar  = 0;		//滚动条
 struct Menu_t *menuPoint;	//当前菜单
+int8_t menuNow = 0;				//当前菜单序号
+int8_t menuLast = 0;			//上次菜单序号
 
 //拿来做测试的数据
 int8_t kp = 0;
@@ -170,7 +172,11 @@ void DisplayRefreash(struct Menu_t *nowMenu, u8 selectItem, u8 scrollBar)
 	int i = 0;
 	static u8 lastSelectItem = 0;		//记录上次索引
 	
-	LCD_Fill(0, 0, LCD_W, LCD_H, BLACK);
+	if(menuLast != menuNow)
+	{
+		LCD_Fill(0, 0, LCD_W, LCD_H, BLACK);
+	}
+	
 	if(nowMenu == &MainUI)					//当回到主菜单时，由于没有全占屏，所以全部清屏，再画
 	{
 		LCD_Fill(0, 0, LCD_W, LCD_H, BLACK);
@@ -178,15 +184,16 @@ void DisplayRefreash(struct Menu_t *nowMenu, u8 selectItem, u8 scrollBar)
 	}
 	else 
 	{	
-		LCD_ShowChar(0, lastSelectItem*16, ' ', WHITE, BLACK, 16, 1);		//清除上次索引
-		LCD_ShowChar(0, selectItem*16, 		 '>', WHITE, BLACK, 16, 1);		//画出这次索引
+		LCD_ShowChar(0, lastSelectItem*32, ' ', WHITE, BLACK, 32, 1);		//清除上次索引
+		LCD_ShowChar(0, selectItem*32, 		 '>', WHITE, BLACK, 32, 1);		//画出这次索引
 		for(i = 0; i < (nowMenu->MenuProperty->MenuLen-nowMenu->MenuProperty->scrollBarLen); i++)
 		{
-			LCD_ShowString(8, i*16, nowMenu[i+scrollBar].displayString, WHITE, BLACK, 16, 1);
+			LCD_ShowString(8, i*32, nowMenu[i+scrollBar].displayString, WHITE, BLACK, 32, 1);
 		}
 	}
 //	OLED_Refresh();
 	lastSelectItem = selectItem;
+	menuLast = menuNow;
 }
 
 /**
@@ -202,15 +209,20 @@ void DisplayRefreash(struct Menu_t *nowMenu, u8 selectItem, u8 scrollBar)
 void DisplayRefreashData(struct Menu_t *nowMenu, u8 selectItem, u8 scrollBar)
 {
 	int i = 0;
+	if(menuLast != menuNow)
+	{
+		LCD_Fill(0, 0, LCD_W, LCD_H, BLACK);
+	}
 	for(i=0; i<(nowMenu->MenuProperty->MenuLen-nowMenu->MenuProperty->scrollBarLen); i++)
 	{
-		LCD_ShowString(8, i*16, nowMenu[i+scrollBar].displayString, WHITE, BLACK, 16, 1);
+		LCD_ShowString(8, i*32, nowMenu[i+scrollBar].displayString, WHITE, BLACK, 32, 1);
 	}
+	menuLast = menuNow;
 //	OLED_Refresh();
 }
 
 /**
-  * @name    GuiInit
+  * @name    MenuInit
   * @brief   一些菜单初始化主要是主菜单页的子菜单确定，由于父菜单结构体初始化时不能初始化子菜单
   * 		 所以在这里初始化
   * @param   : 
@@ -218,7 +230,7 @@ void DisplayRefreashData(struct Menu_t *nowMenu, u8 selectItem, u8 scrollBar)
   * @author  LQH
   * @date    2022-01-27
   */
-void GuiInit()
+void MenuInit()
 {
 	MainUI.childrenMenu = menuMain;
 	menuMain[1].childrenMenu = setMenu1;
@@ -240,57 +252,61 @@ void GuiDataDisplayRefresh()
 {
 	if(menuPoint == setMenu1)
 	{
-		sprintf((char*)setMenu1[1].displayString,"bull  %3d     ",count1);
-		sprintf((char*)setMenu1[2].displayString,"bird  %3d     ",count2);
-		sprintf((char*)setMenu1[3].displayString,"dog   %3d     ",count3);
-		sprintf((char*)setMenu1[4].displayString,"bow   %3d     ",count4);
-		sprintf((char*)setMenu1[5].displayString,"fish  %3d     ",count5);
-		DisplayRefreashData(menuPoint,selectItem,scrollBar);
+		menuNow = 2;
+		sprintf((char*)setMenu1[1].displayString, "bull  %3d     ", count1);
+		sprintf((char*)setMenu1[2].displayString, "bird  %3d     ", count2);
+		sprintf((char*)setMenu1[3].displayString, "dog   %3d     ", count3);
+		sprintf((char*)setMenu1[4].displayString, "bow   %3d     ", count4);
+		sprintf((char*)setMenu1[5].displayString, "fish  %3d     ", count5);
+		DisplayRefreashData(menuPoint, selectItem, scrollBar);
 	}
 	else if(menuPoint == setMenu2)
 	{
-		sprintf((char*)setMenu2[1].displayString,"KP   %3d      ",kp);
-		sprintf((char*)setMenu2[2].displayString,"KI   %3d      ",ki);
-		sprintf((char*)setMenu2[3].displayString,"KD   %3d      ",kd);
-		sprintf((char*)setMenu2[4].displayString,"PWM  %3d      ",0);
-		DisplayRefreashData(menuPoint,selectItem,scrollBar);
+		menuNow = 3;
+		sprintf((char*)setMenu2[1].displayString, "KP   %3d      ", kp);
+		sprintf((char*)setMenu2[2].displayString, "KI   %3d      ", ki);
+		sprintf((char*)setMenu2[3].displayString, "KD   %3d      ", kd);
+		sprintf((char*)setMenu2[4].displayString, "PWM  %3d      ", 0);
+		DisplayRefreashData(menuPoint, selectItem, scrollBar);
 	}
 	else if(menuPoint == setMenu3)
 	{
-		sprintf((char*)setMenu3[1].displayString,"Hour   %2d    ",myTimeTemp.Hour);	
-		sprintf((char*)setMenu3[2].displayString,"Minute %2d    ",myTimeTemp.Minute);	
-		sprintf((char*)setMenu3[3].displayString,"Second %2d    ",myTimeTemp.Second);	
-		sprintf((char*)setMenu3[4].displayString,"Year   %4d    ",myTimeTemp.Year);
-		sprintf((char*)setMenu3[5].displayString,"Month  %2d    ",myTimeTemp.Month);
-		sprintf((char*)setMenu3[6].displayString,"Day    %2d    ",myTimeTemp.Day);
-		DisplayRefreashData(menuPoint,selectItem,scrollBar);
+		menuNow = 4;
+		sprintf((char*)setMenu3[1].displayString, "Hour   %2d    ", myTimeTemp.Hour);	
+		sprintf((char*)setMenu3[2].displayString, "Minute %2d    ", myTimeTemp.Minute);	
+		sprintf((char*)setMenu3[3].displayString, "Second %2d    ", myTimeTemp.Second);	
+		sprintf((char*)setMenu3[4].displayString, "Year   %4d    ", myTimeTemp.Year);
+		sprintf((char*)setMenu3[5].displayString, "Month  %2d    ", myTimeTemp.Month);
+		sprintf((char*)setMenu3[6].displayString, "Day    %2d    ", myTimeTemp.Day);
+		DisplayRefreashData(menuPoint, selectItem, scrollBar);
 	}
 	else if(menuPoint == &MainUI)
 	{
+		menuNow = 1;
 		MainUiSet();
 //		OLED_Refresh();
 	}
 }
 
-void GuiControl()
+void MenuControl()
 {
 	if(isKeyUp == 1)//上键按下
 	{
-		isKeyUp=0;//标志位清零
-		selectItem--;//当前菜单在当前菜单页的索引--
+		isKeyUp=0;		//标志位清零
+		selectItem--;	//当前菜单在当前菜单页的索引--
 		if(selectItem<0 && scrollBar!=0)//小于0,但是滚动条不在0，就减滚动条
 		{
 			selectItem = 0;
 			scrollBar--;
 		}
-		else if(selectItem<0 && scrollBar==0)//小于0,滚动条也在0，就将索引移到最后，滚动条到最大
+		else if(selectItem<0 && scrollBar==0)	//小于0,滚动条也在0，就将索引移到最后，滚动条到最大
 		{
 			selectItem = menuPoint->MenuProperty->MenuLen-1-menuPoint->MenuProperty->scrollBarLen;
 			scrollBar  = menuPoint->MenuProperty->scrollBarLen;
 		}
-		DisplayRefreash(menuPoint, selectItem, scrollBar);//刷新显示
+		DisplayRefreash(menuPoint, selectItem, scrollBar);	//刷新显示
 	}
-	else if(isKeyDown == 1)//和上键差不多
+	else if(isKeyDown == 1)	//和上键差不多
 	{
 		isKeyDown = 0;
 		selectItem++;
@@ -321,20 +337,20 @@ void GuiControl()
 	}
 	else if(isKeyEnter == 1)
 	{
-		if(selectItem==0 && scrollBar==0 && menuPoint[selectItem].fatherMenu!=NULL)//假如索引为零而且父菜单不为空，指向父指针
+		if(selectItem==0 && scrollBar==0 && menuPoint[selectItem].fatherMenu!=NULL)	//假如索引为零而且父菜单不为空，指向父指针
 		{
 			menuPoint = menuPoint[selectItem].fatherMenu;
 		}
-		else if(menuPoint[selectItem+scrollBar].childrenMenu != NULL)//假如该索引子菜单页不为空，指向子菜单
+		else if(menuPoint[selectItem+scrollBar].childrenMenu != NULL)	//假如该索引子菜单页不为空，指向子菜单
 		{
-			if(menuPoint[selectItem+scrollBar].func2 != NULL)//假如当前菜单的func2不为空，执行相关函数
+			if(menuPoint[selectItem+scrollBar].func2 != NULL)	//假如当前菜单的func2不为空，执行相关函数
 			{
 				menuPoint[selectItem+scrollBar].func2();
 			}
 			menuPoint = menuPoint[selectItem+scrollBar].childrenMenu;
 			selectItem = 0;
 		}
-		else if(menuPoint[selectItem+scrollBar].func2 != NULL)//假如当前菜单的func2不为空，执行相关函数
+		else if(menuPoint[selectItem+scrollBar].func2 != NULL)	//假如当前菜单的func2不为空，执行相关函数
 		{
 			menuPoint[selectItem+scrollBar].func2();
 		}
