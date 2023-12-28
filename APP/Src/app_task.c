@@ -118,9 +118,13 @@ void Display_Task(void *p_arg)
 {
 	while(1)
 	{
-//		LCD_ShowChinese(0, 0, "中中中", WHITE, BLACK, 32, 0);
-		
-		vTaskDelay(500);
+//		count1++;
+//		count2++;
+//		count3++;
+//		count4++;
+//		GuiControl();
+//		GuiDataDisplayRefresh();
+		vTaskDelay(10);
 	}
 }
 
@@ -135,24 +139,24 @@ void Key_Task(void *p_arg)
 	int t = 0;
 	while(1)
 	{
-		t = KEY_Scan(0);		//得到键值
-		switch(t)
-		{				 
-			case KEY_UP_PRES:
-				LCD_ShowChar(0, 0, '-', WHITE, BLACK, 32, 0);
-				break;
-			case KEY_DOWN_PRES:
-				LCD_ShowChinese(0, 0, "景景景", WHITE, BLACK, 32, 0);
-				break;
-			case KEY_BACK_PRES:
-				LCD_ShowChinese(0, 0, "园园园", WHITE, BLACK, 32, 0);
-				break;
-			case KEY_ENTER_PRES:
-				LCD_ShowChinese(0, 0, "电电电", WHITE, BLACK, 32, 0);
-				break;
-			default:
-				delay_ms(10);	
-		}
+//		t = KEY_Scan(0);		//得到键值
+//		switch(t)
+//		{				 
+//			case KEY_UP_PRES:
+//				LCD_ShowChinese(0, 0, "中中中", WHITE, BLACK, 32, 0);
+//				break;
+//			case KEY_DOWN_PRES:
+//				LCD_ShowChinese(0, 0, "景景景", WHITE, BLACK, 32, 0);
+//				break;
+//			case KEY_BACK_PRES:
+//				LCD_ShowChinese(0, 0, "园园园", WHITE, BLACK, 32, 0);
+//				break;
+//			case KEY_ENTER_PRES:
+//				LCD_ShowChinese(0, 0, "电电电", WHITE, BLACK, 32, 0);
+//				break;
+//			default:
+//				delay_ms(10);	
+//		}
 		vTaskDelay(10);
 	}
 }

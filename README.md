@@ -1,0 +1,24 @@
+
+LED：
+LED		C13
+
+按键：
+上按键	B8
+下按键	B4
+左按键	B5
+右按键	B9
+
+LCD屏幕：
+SCL		A0
+SDA		A1
+RES		A2
+DC		A3
+CS		A4
+BLK		A5
+
+ESP-01S：
+
+
+MPU6050：
+SCL		B6
+SDA		B7

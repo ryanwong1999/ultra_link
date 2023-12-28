@@ -10,8 +10,8 @@
 #define LED_PORT							GPIOC
 #define LED_PIN								GPIO_Pin_13
 
-#define LED_TOGGLE						digitalToggle(LED_PORT, LED_PIN)
-#define LED_OFF								GPIO_SetBits(LED_PORT, LED_PIN)
+#define LED_TOGGLE						digitalToggle	(LED_PORT, LED_PIN)
+#define LED_OFF								GPIO_SetBits	(LED_PORT, LED_PIN)
 #define LED_ON								GPIO_ResetBits(LED_PORT, LED_PIN)
 
 #define I2CPORT								GPIOB					//定义IO接口
@@ -33,6 +33,16 @@
 #define KEY_ENTER_PORT_CLK		RCC_APB2Periph_GPIOB   //输出继电器控制引脚
 #define KEY_ENTER_PORT				GPIOB
 #define KEY_ENTER_PIN					GPIO_Pin_9
+
+#define key1 PBin(4)
+#define key2 PBin(5)
+#define key3 PBin(8)
+#define key4 PBin(9)
+
+#define KEY_UP      key3
+#define KEY_DOWN    key1
+#define KEY_BACK    key2
+#define KEY_ENTER   key4 
 
 
 void LED_Init(void);				//初始化		
