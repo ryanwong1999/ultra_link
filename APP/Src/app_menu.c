@@ -3,8 +3,7 @@
 int8_t selectItem = 0;		//当前菜单在当前菜单页的索引，最大为3，一页最多显示四个菜单
 int8_t scrollBar  = 0;		//滚动条
 struct Menu_t *menuPoint;	//当前菜单
-int8_t menuNow = 0;				//当前菜单序号
-int8_t menuLast = 0;			//上次菜单序号
+struct Menu_t *menuLast;
 
 //拿来做测试的数据
 int8_t kp = 0;
@@ -12,6 +11,9 @@ int8_t ki = 0;
 int8_t kd = 0;
 int16_t count_test = 0;
 uint16_t count1 = 0, count2 = 2, count3 = 4, count4 = 6, count5 = 8;
+
+int fontColor = WHITE;
+int backColor = BLACK;
 
 //一些菜单的功能函数
 void KpSub(void);
@@ -141,20 +143,20 @@ void MainUiSet()
 	u8 time_x = 18, time_y = 12, date_x = 26, date_y = 40;
 	for(i = 1; i < 40; i++)
 	{
-		LCD_ShowChar(8*i, 0, '-', WHITE, BLACK, 16, 1);
-		LCD_ShowChar(8*i, 160, '-', WHITE, BLACK, 16, 1);
+		LCD_ShowChar(8*i, 0, '-', fontColor, backColor, 16, 1);
+		LCD_ShowChar(8*i, 160, '-', fontColor, backColor, 16, 1);
 	}
-	LCD_ShowIntNum(time_x, 		time_y, myTime.Hour, 		2 ,WHITE, BLACK, 24);
-	LCD_ShowChar(time_x+24, 	time_y, ':', WHITE, BLACK, 24, 1);
-	LCD_ShowIntNum(time_x+36, time_y, myTime.Minute, 	2 ,WHITE, BLACK, 24);
-	LCD_ShowChar(time_x+60, 	time_y, ':', WHITE, BLACK, 24, 1);
-	LCD_ShowIntNum(time_x+72, time_y, myTime.Second, 	2 ,WHITE, BLACK, 24);
+	LCD_ShowIntNum(time_x, 		time_y, myTime.Hour, 		2 ,fontColor, backColor, 24);
+	LCD_ShowChar(time_x+24, 	time_y, ':', fontColor, backColor, 24, 1);
+	LCD_ShowIntNum(time_x+36, time_y, myTime.Minute, 	2 ,fontColor, backColor, 24);
+	LCD_ShowChar(time_x+60, 	time_y, ':', fontColor, backColor, 24, 1);
+	LCD_ShowIntNum(time_x+72, time_y, myTime.Second, 	2 ,fontColor, backColor, 24);
 	
-	LCD_ShowIntNum(time_x, 		date_y, myTime.Year, 	4 ,WHITE, BLACK, 16);
-	LCD_ShowChar(time_x+32, 	date_y, ':', WHITE, BLACK, 16, 1);
-	LCD_ShowIntNum(time_x+40, date_y, myTime.Month, 2 ,WHITE, BLACK, 16);
-	LCD_ShowChar(time_x+56, 	date_y, ':', WHITE, BLACK, 16, 1);
-	LCD_ShowIntNum(time_x+64, date_y, myTime.Day, 	2 ,WHITE, BLACK, 16);
+	LCD_ShowIntNum(time_x, 		date_y, myTime.Year, 	4 ,fontColor, backColor, 16);
+	LCD_ShowChar(time_x+32, 	date_y, ':', fontColor, backColor, 16, 1);
+	LCD_ShowIntNum(time_x+40, date_y, myTime.Month, 2 ,fontColor, backColor, 16);
+	LCD_ShowChar(time_x+56, 	date_y, ':', fontColor, backColor, 16, 1);
+	LCD_ShowIntNum(time_x+64, date_y, myTime.Day, 	2 ,fontColor, backColor, 16);
 }
 
 /**
@@ -172,28 +174,28 @@ void DisplayRefreash(struct Menu_t *nowMenu, u8 selectItem, u8 scrollBar)
 	int i = 0;
 	static u8 lastSelectItem = 0;		//记录上次索引
 	
-	if(menuLast != menuNow)
+	if(menuPoint != menuLast)
 	{
-		LCD_Fill(0, 0, LCD_W, LCD_H, BLACK);
+		LCD_Fill(0, 0, LCD_W, LCD_H, backColor);
 	}
 	
 	if(nowMenu == &MainUI)					//当回到主菜单时，由于没有全占屏，所以全部清屏，再画
 	{
-		LCD_Fill(0, 0, LCD_W, LCD_H, BLACK);
+		LCD_Fill(0, 0, LCD_W, LCD_H, backColor);
 		MainUiSet();
 	}
 	else 
 	{	
-		LCD_ShowChar(0, lastSelectItem*32, ' ', WHITE, BLACK, 32, 1);		//清除上次索引
-		LCD_ShowChar(0, selectItem*32, 		 '>', WHITE, BLACK, 32, 1);		//画出这次索引
+		LCD_ShowChar(0, lastSelectItem*32, '>', backColor, backColor, 32, 1);		//清除上次索引
+		LCD_ShowChar(0, selectItem*32, 		 '>', fontColor, backColor, 32, 1);		//画出这次索引
 		for(i = 0; i < (nowMenu->MenuProperty->MenuLen-nowMenu->MenuProperty->scrollBarLen); i++)
 		{
-			LCD_ShowString(8, i*32, nowMenu[i+scrollBar].displayString, WHITE, BLACK, 32, 1);
+			LCD_ShowString(20, i*32, nowMenu[i+scrollBar].displayString, fontColor, backColor, 32, 1);
 		}
 	}
 //	OLED_Refresh();
 	lastSelectItem = selectItem;
-	menuLast = menuNow;
+	menuLast = menuPoint;
 }
 
 /**
@@ -209,15 +211,10 @@ void DisplayRefreash(struct Menu_t *nowMenu, u8 selectItem, u8 scrollBar)
 void DisplayRefreashData(struct Menu_t *nowMenu, u8 selectItem, u8 scrollBar)
 {
 	int i = 0;
-	if(menuLast != menuNow)
-	{
-		LCD_Fill(0, 0, LCD_W, LCD_H, BLACK);
-	}
 	for(i=0; i<(nowMenu->MenuProperty->MenuLen-nowMenu->MenuProperty->scrollBarLen); i++)
 	{
-		LCD_ShowString(8, i*32, nowMenu[i+scrollBar].displayString, WHITE, BLACK, 32, 1);
+		LCD_ShowString(20, i*32, nowMenu[i+scrollBar].displayString, fontColor, backColor, 32, 1);
 	}
-	menuLast = menuNow;
 //	OLED_Refresh();
 }
 
@@ -252,7 +249,6 @@ void GuiDataDisplayRefresh()
 {
 	if(menuPoint == setMenu1)
 	{
-		menuNow = 2;
 		sprintf((char*)setMenu1[1].displayString, "bull  %3d     ", count1);
 		sprintf((char*)setMenu1[2].displayString, "bird  %3d     ", count2);
 		sprintf((char*)setMenu1[3].displayString, "dog   %3d     ", count3);
@@ -262,7 +258,6 @@ void GuiDataDisplayRefresh()
 	}
 	else if(menuPoint == setMenu2)
 	{
-		menuNow = 3;
 		sprintf((char*)setMenu2[1].displayString, "KP   %3d      ", kp);
 		sprintf((char*)setMenu2[2].displayString, "KI   %3d      ", ki);
 		sprintf((char*)setMenu2[3].displayString, "KD   %3d      ", kd);
@@ -271,7 +266,6 @@ void GuiDataDisplayRefresh()
 	}
 	else if(menuPoint == setMenu3)
 	{
-		menuNow = 4;
 		sprintf((char*)setMenu3[1].displayString, "Hour   %2d    ", myTimeTemp.Hour);	
 		sprintf((char*)setMenu3[2].displayString, "Minute %2d    ", myTimeTemp.Minute);	
 		sprintf((char*)setMenu3[3].displayString, "Second %2d    ", myTimeTemp.Second);	
@@ -282,7 +276,6 @@ void GuiDataDisplayRefresh()
 	}
 	else if(menuPoint == &MainUI)
 	{
-		menuNow = 1;
 		MainUiSet();
 //		OLED_Refresh();
 	}
@@ -318,7 +311,7 @@ void MenuControl()
 			
 		}
 		//假如索引大于最大值，滚动条在最大值，移动到第一个位置
-		else if(selectItem>(menuPoint->MenuProperty->MenuLen-1-menuPoint->MenuProperty->scrollBarLen)&&scrollBar==menuPoint->MenuProperty->scrollBarLen)
+		else if(selectItem>(menuPoint->MenuProperty->MenuLen-1-menuPoint->MenuProperty->scrollBarLen) && scrollBar==menuPoint->MenuProperty->scrollBarLen)
 		{
 			selectItem = 0;
 			scrollBar = 0;
@@ -327,6 +320,7 @@ void MenuControl()
 	}
 	else if(isKeyBack == 1)
 	{
+		/**
 		//假如当前菜单的func1不为空，执行相关函数
 		if(menuPoint[selectItem+scrollBar].func1 != NULL)
 		{
@@ -334,6 +328,14 @@ void MenuControl()
 		}
 		isKeyBack = 0;
 		DisplayRefreash(menuPoint, selectItem, scrollBar);
+		**/
+		if(menuPoint[selectItem].fatherMenu!=NULL)	//假如索引为零而且父菜单不为空，指向父指针
+		{
+			menuPoint = menuPoint[selectItem].fatherMenu;
+		}
+		isKeyBack = 0;
+		DisplayRefreash(menuPoint, selectItem, scrollBar);
+		
 	}
 	else if(isKeyEnter == 1)
 	{
