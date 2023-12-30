@@ -140,25 +140,25 @@ void TimeSetInit(void)
 void MainUiSet()
 {
 	int i;
-	u8 time_x = 18, time_y = 12, date_x = 26, date_y = 40;
-	for(i = 1; i < 40; i++)
+	u8 time_x = 18,time_y = 12,date_x=26,date_y=40;
+	for(i=1;i<15;i++)
 	{
-		LCD_ShowChar(8*i, 0, '-', fontColor, backColor, 16, 1);
-		LCD_ShowChar(8*i, 160, '-', fontColor, backColor, 16, 1);
-	}
-	LCD_ShowIntNum(time_x, 		time_y, myTime.Hour, 		2 ,fontColor, backColor, 24);
-	LCD_ShowChar(time_x+24, 	time_y, ':', fontColor, backColor, 24, 1);
-	LCD_ShowIntNum(time_x+36, time_y, myTime.Minute, 	2 ,fontColor, backColor, 24);
-	LCD_ShowChar(time_x+60, 	time_y, ':', fontColor, backColor, 24, 1);
-	LCD_ShowIntNum(time_x+72, time_y, myTime.Second, 	2 ,fontColor, backColor, 24);
-	
-	LCD_ShowIntNum(time_x, 		date_y, myTime.Year, 	4 ,fontColor, backColor, 16);
-	LCD_ShowChar(time_x+32, 	date_y, ':', fontColor, backColor, 16, 1);
-	LCD_ShowIntNum(time_x+40, date_y, myTime.Month, 2 ,fontColor, backColor, 16);
-	LCD_ShowChar(time_x+56, 	date_y, ':', fontColor, backColor, 16, 1);
-	LCD_ShowIntNum(time_x+64, date_y, myTime.Day, 	2 ,fontColor, backColor, 16);
-}
+		OLED_ShowChar(8*i,0, '-',16,1);
+		OLED_ShowChar(8*i,48,'-',16,1);
+	}	
 
+	OLED_ShowNum(time_x,    time_y,myTime.Hour  ,2,24,1);
+	OLED_ShowChar(time_x+24,time_y,':'   ,24,1);
+	OLED_ShowNum(time_x+36, time_y,myTime.Minute,2,24,1);
+	OLED_ShowChar(time_x+60,time_y,':'   ,24,1);
+	OLED_ShowNum(time_x+72, time_y,myTime.Second,2,24,1);
+	
+	OLED_ShowNum(date_x,    date_y,myTime.Year  ,4,16,1);
+	OLED_ShowChar(date_x+32,date_y,'/'   ,16,1);
+	OLED_ShowNum(date_x+40, date_y,myTime.Month,2,16,1);
+	OLED_ShowChar(date_x+56,date_y,'/'   ,16,1);
+	OLED_ShowNum(date_x+64, date_y,myTime.Day,  2,16,1);
+}
 /**
   * @Name    DisplayRefreash
   * @brief   刷新当前菜单页的所有菜单项
@@ -169,33 +169,25 @@ void MainUiSet()
   * @author  LQH
   * @Data    2022-01-27
   */
-void DisplayRefreash(struct Menu_t *nowMenu, u8 selectItem, u8 scrollBar)
+void DisplayRefreash(struct Menu_t *nowMenu,u8 selectItem,u8 scrollBar)
 {
 	int i = 0;
-	static u8 lastSelectItem = 0;		//记录上次索引
-	
-	if(menuPoint != menuLast)
+	static u8 lastSelectItem=0;//记录上次索引
+	if(nowMenu==&MainUI)//当回到主菜单时，由于没有全占屏，所以全部清屏，再画
 	{
-		LCD_Fill(0, 0, LCD_W, LCD_H, backColor);
-	}
-	
-	if(nowMenu == &MainUI)					//当回到主菜单时，由于没有全占屏，所以全部清屏，再画
-	{
-		LCD_Fill(0, 0, LCD_W, LCD_H, backColor);
+		OLED_Clear();
 		MainUiSet();
-	}
-	else 
+	}else 
 	{	
-		LCD_ShowChar(0, lastSelectItem*32, '>', backColor, backColor, 32, 1);		//清除上次索引
-		LCD_ShowChar(0, selectItem*32, 		 '>', fontColor, backColor, 32, 1);		//画出这次索引
-		for(i = 0; i < (nowMenu->MenuProperty->MenuLen-nowMenu->MenuProperty->scrollBarLen); i++)
+		OLED_ShowChar(0,lastSelectItem*16, ' ',16,1);//清除上次索引
+		OLED_ShowChar(0,selectItem*16,     '>',16,1);//画出这次索引
+		for(i=0;i<(nowMenu->MenuProperty->MenuLen-nowMenu->MenuProperty->scrollBarLen);i++)
 		{
-			LCD_ShowString(20, i*32, nowMenu[i+scrollBar].displayString, fontColor, backColor, 32, 1);
+			OLED_ShowString(8,i*16,nowMenu[i+scrollBar].displayString,16,1);
 		}
 	}
-//	OLED_Refresh();
+	OLED_Refresh();
 	lastSelectItem = selectItem;
-	menuLast = menuPoint;
 }
 
 /**
@@ -208,14 +200,14 @@ void DisplayRefreash(struct Menu_t *nowMenu, u8 selectItem, u8 scrollBar)
   * @author  LQH
   * @Data    2022-01-27
   */
-void DisplayRefreashData(struct Menu_t *nowMenu, u8 selectItem, u8 scrollBar)
+void DisplayRefreashData(struct Menu_t *nowMenu,u8 selectItem,u8 scrollBar)
 {
 	int i = 0;
-	for(i=0; i<(nowMenu->MenuProperty->MenuLen-nowMenu->MenuProperty->scrollBarLen); i++)
+	for(i=0;i<(nowMenu->MenuProperty->MenuLen-nowMenu->MenuProperty->scrollBarLen);i++)
 	{
-		LCD_ShowString(20, i*32, nowMenu[i+scrollBar].displayString, fontColor, backColor, 32, 1);
+		OLED_ShowString(8,i*16,nowMenu[i+scrollBar].displayString,16,1);
 	}
-//	OLED_Refresh();
+	OLED_Refresh();
 }
 
 /**
@@ -277,7 +269,7 @@ void GuiDataDisplayRefresh()
 	else if(menuPoint == &MainUI)
 	{
 		MainUiSet();
-//		OLED_Refresh();
+		OLED_Refresh();
 	}
 }
 

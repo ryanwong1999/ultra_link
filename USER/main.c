@@ -15,10 +15,8 @@ static void Initializer(void)
 	uart_init(9600);	 					//串口初始化为9600
 	Key_Init();
 	LED_Init();
-	LCD_Init();  								//LCD屏初始化
+	OLED_Init();  								//OLED屏初始化
 //	TIM4_CH1_PWM_Init(2000,720);//PWM频率=72000000/2000/720=50hz=20ms
-	LCD_Fill(0, 0, LCD_W, LCD_H, BLACK);
-	
 	MenuInit();
 }
 
