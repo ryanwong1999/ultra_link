@@ -8,28 +8,28 @@ u8 OLED_GRAM[144][8];
 void OLED_ColorTurn(u8 i)
 {
 	if(i==0)
-		{
-			OLED_WR_Byte(0xA6,OLED_CMD);//正常显示
-		}
+	{
+		OLED_WR_Byte(0xA6,OLED_CMD);//正常显示
+	}
 	if(i==1)
-		{
-			OLED_WR_Byte(0xA7,OLED_CMD);//反色显示
-		}
+	{
+		OLED_WR_Byte(0xA7,OLED_CMD);//反色显示
+	}
 }
 
 //屏幕旋转180度
 void OLED_DisplayTurn(u8 i)
 {
 	if(i==0)
-		{
-			OLED_WR_Byte(0xC8,OLED_CMD);//正常显示
-			OLED_WR_Byte(0xA1,OLED_CMD);
-		}
+	{
+		OLED_WR_Byte(0xC8,OLED_CMD);//正常显示
+		OLED_WR_Byte(0xA1,OLED_CMD);
+	}
 	if(i==1)
-		{
-			OLED_WR_Byte(0xC0,OLED_CMD);//反转显示
-			OLED_WR_Byte(0xA0,OLED_CMD);
-		}
+	{
+		OLED_WR_Byte(0xC0,OLED_CMD);//反转显示
+		OLED_WR_Byte(0xA0,OLED_CMD);
+	}
 }
 
 void OLED_WR_Byte(u8 dat,u8 cmd)
